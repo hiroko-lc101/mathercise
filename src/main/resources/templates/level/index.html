@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+    <h1 th:text="${title}">Default Title</h1>
+    <nav th:replace="fragments :: navigation"></nav>
+    <p th:unless="${levels} and ${levels.size()}">No Level</p>
+    <table class="table">
+        <tr>
+            <th>Level</th>
+        </tr>
+        <tr th:each="level : ${levels}">
+            <td th:text="${level.name}"></td>
+            <td><a th:href="@{'/level/edit/' + ${level.id}}">Edit</a></td>
+        </tr>
+    </table>
+    <nav>
+        <a href="/level/add">Add</a> |
+        <a href="/level/remove">Remove</a>
+    </nav>
+</body>
+</html>
