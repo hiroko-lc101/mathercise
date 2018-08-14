@@ -1,14 +1,16 @@
 package org.launchcode.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Card {
+
+    /**
+     * fields
+     */
 
     @Id
     @GeneratedValue
@@ -25,12 +27,23 @@ public class Card {
     @ManyToOne
     private Level level;
 
+    @ManyToMany(mappedBy = "cards")
+    private List<Test> tests;
+
+    /**
+     * constructors
+     */
+
+    public Card() { }
+
     public Card(String question, String answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public Card() { }
+    /**
+     * getters & setters
+     */
 
     public int getId() {
         return id;

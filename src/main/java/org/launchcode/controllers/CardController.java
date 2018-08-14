@@ -25,7 +25,7 @@ public class CardController {
     // Request path: card
     @RequestMapping(value = "")
     public String index(Model model) {
-        model.addAttribute("cards", cardDao.findAll());
+        model.addAttribute("cards", cardDao.findAllByOrderByLevelAsc());
         model.addAttribute("title", "Flash Cards");
         return "card/index";
     }
