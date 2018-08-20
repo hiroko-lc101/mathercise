@@ -33,7 +33,7 @@ public class TestController {
     @Autowired
     private CardDao cardDao;
 
-    // Request path: /test
+    // Request path: test
     @RequestMapping(value = "")
     public String index(Model model) {
         model.addAttribute("tests", testDao.findAllByOrderByLevelAsc());

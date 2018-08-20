@@ -4,15 +4,15 @@
 <body class="container">
     <h1 th:text="${title}">Default Title</h1>
     <nav th:replace="fragments :: navigation"></nav>
-    <form method="post" th:object="${card}" action="/card/edit">
+    <form method="post" th:object="${card}" action="/card/edit" onsubmit="return validateQuestionAndAnswer()" name="Card">
         <div class="form-group">
             <label th:for="question">Question</label>
-            <input class="form-control" th:field="*{question}" />
+            <input class="form-control" th:field="*{question}" name="question" />
             <span th:errors="*{question}" class="error"></span>
         </div>
         <div class="form-group">
             <label th:for="answer">Answer</label>
-            <input class="form-control" th:field="*{answer}" />
+            <input class="form-control" th:field="*{answer}" name="answer" />
             <span th:errors="*{answer}" class="error"></span>
         </div>
         <div class="form-group">
