@@ -2,54 +2,110 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-<h1 th:text="${title}">Default Title</h1>
-<nav th:replace="fragments :: navigation"></nav>
-<form method="post" th:object="${form}" action="/test/edit">
-    <div class="form-group">
-        <label th:for="testName">Fitness Test</label>
-        <input class="form-control" th:value="*{test.name}" name="testName"/>
-        <span th:errors="*{test.name}" class="error"></span>
-    </div>
-    <div class="form-group">
-        <label th:for="levelId">Level</label>
-        <select name="levelId" disabled="disabled">
-            <option th:each="level : *{levels}"
-                    th:text="${level.name}"
-                    th:value="${level.id}"
-                    th:selected="${level.id} == *{test.level.id} ? true : false">
-            </option>
-        </select>
-    </div>
-    <div class="form-group">
-        <table class="table">
-            <tr>
-                <th>Question</th>
-                <th>Card</th>
-            </tr>
-            <div th:if="*{test.cards} and *{test.cards.size()}">
-                <tr th:each="testCard,iter : *{test.cards}">
-                    <td th:text="${iter.index} + 1"></td>
-                    <td>
-                        <!-- <select th:name="'cardId' + (${iter.index} + 1)"> -->
-                        <select th:name="cardIds">
-                            <option th:value="-1">-- Please Select --</option>
-                            <option th:each="card : *{cards}"
-                                    th:text="${card.question}"
-                                    th:value="${card.id}"
-                                    th:selected="${card.id} == ${testCard.id} ? true : false">
-                            </option>
-                        </select>
-                    </td>
+    <h1 th:text="${title}">Default Title</h1>
+    <nav th:replace="fragments :: navigation"></nav>
+    <form method="post" th:object="${test}" action="/test/edit">
+        <div class="form-group">
+            <label th:for="name">Fitness Test</label>
+            <input class="form-control" th:field="*{name}" />
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="level">Level</label>
+            <select name="levelId" disabled="disabled">
+                <option th:each="level : ${levels}"
+                        th:text="${level.name}"
+                        th:value="${level.id}"
+                        th:selected="${level.id} == ${test.level.id} ? true : false">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <table class="table">
+                <tr>
+                    <th>Question Number</th>
+                    <th>Card</th>
+                    <th>
+                        <input type="submit" value="Add" name="addTestQuestion"/>
+                    </th>
                 </tr>
-                <div th:if="*{test.cards.size()} &lt; 20"
-                     th:with="remaining=*{test.cards.size()}+1" >
-                    <tr th:each="i : ${#numbers.sequence(remaining, 20)}">
-                        <td th:text="${i}"></td>
+                <div th:if="${testQuestions} and ${testQuestions.size()}">
+                    <tr th:each="testQuestion : ${testQuestions}">
+                        <td th:text="${testQuestion.questionNumber}"></td>
                         <td>
-                            <!-- <select th:name="'cardId' + ${i}"> -->
+                            <div th:if="${testQuestion.card == null}">
+                                <select th:name="cardIds">
+                                    <option th:value="-2">-- Please Select --</option>
+                                    <option th:value="-1">Remove</option>
+                                    <option th:each="card : ${cards}"
+                                            th:text="${card.question}"
+                                            th:value="${card.id}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div th:unless="${testQuestion.card == null}">
+                                <select th:name="cardIds">
+                                    <option th:value="-2">-- Please Select --</option>
+                                    <option th:value="-1">Remove</option>
+                                    <option th:each="card : ${cards}"
+                                            th:text="${card.question}"
+                                            th:value="${card.id}"
+                                            th:selected="${card.id} == ${testQuestion.card.id} ? true : false">
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </div>
+            </table>
+        </div>
+
+
+
+<!--        <div class="form-group">
+            <table class="table">
+                <tr>
+                    <th>Question Number</th>
+                    <th>Card</th>
+                </tr>
+                <div th:if="${testQuestions} and ${testQuestions.size()}">
+                    <tr th:each="testQuestion : *{testQuestions}">
+                        <td th:text="${testQuestion.questionNumber}" th:name="questionNumbers"></td>
+                        <td>
                             <select th:name="cardIds">
-                                <option th:value="-1">-- Please Select --</option>
-                                <option th:each="card : *{cards}"
+                                <option th:value="-1"> Please Select </option>
+                                <option th:each="card : ${cards}"
+                                        th:text="${card.question}"
+                                        th:value="${card.id}"
+                                        th:selected="${card.id} == ${testQuestion.card_id} ? true : false">
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <div th:if="*{test.cards.size()} &lt; 20"
+                         th:with="remaining=*{test.cards.size()}+1" >
+                        <tr th:each="i : ${#numbers.sequence(remaining, 20)}">
+                            <td th:text="${i}" th:name="questionNumbers"></td>
+                            <td>
+                                <select th:name="cardIds">
+                                    <option th:value="-1"> Please Select </option>
+                                    <option th:each="card : ${cards}"
+                                            th:text="${card.question}"
+                                            th:value="${card.id}">
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </div>
+                </div>
+                <div th:unless="${testQuestions} and ${testQuestions.size()}">
+                    <tr th:each="i : ${#numbers.sequence(1, 20)}">
+                        <td th:text="${i}" th:name="questionNumbers"></td>
+                        <td>
+                            <select th:name="cardIds">
+                                <option th:value="-1"> Please Select </option>
+                                <option th:each="card : ${cards}"
                                         th:text="${card.question}"
                                         th:value="${card.id}">
                                 </option>
@@ -57,26 +113,11 @@
                         </td>
                     </tr>
                 </div>
-            </div>
-            <div th:unless="*{test.cards} and *{test.cards.size()}">
-                <tr th:each="i : ${#numbers.sequence(1, 20)}">
-                    <td th:text="${i}"></td>
-                    <td>
-                        <!-- <select th:name="'cardId' + ${i}"> -->
-                        <select th:name="cardIds">
-                            <option th:value="-1">-- Please Select --</option>
-                            <option th:each="card : *{cards}"
-                                    th:text="${card.question}"
-                                    th:value="${card.id}">
-                            </option>
-                        </select>
-                    </td>
-                </tr>
-            </div>
-        </table>
-    </div>
-    <input type="hidden" th:value="*{test.id}" name="testId" />
-    <input type="submit" value="Edit" />
-</form>
+            </table>
+        </div>
+-->
+        <input type="hidden" th:value="${test.id}" name="testId" />
+        <input type="submit" value="Update" name="updateTestQuestion" />
+    </form>
 </body>
 </html>

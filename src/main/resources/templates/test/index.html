@@ -8,15 +8,17 @@
     <table class="table">
         <tr>
             <th>Fitness Test</th>
+            <th>Level</th>
         </tr>
         <tr th:each="test : ${tests}">
             <td th:text="${test.name}"></td>
+            <td th:text="${test.level.name}"></td>
             <td><a th:href="@{'/test/edit/' + ${test.id}}">Edit</a></td>
         </tr>
-</table>
-<nav>
-    <a href="/test/add">Add</a> |
-    <a href="/test/remove">Remove</a>
-</nav>
+    </table>
+    <nav>
+        <a href="/test/add">Add</a> |
+        <a href="/test/remove">Remove</a>
+    </nav>
 </body>
 </html>

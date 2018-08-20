@@ -1,6 +1,5 @@
 package org.launchcode.controllers;
 
-import org.launchcode.models.Card;
 import org.launchcode.models.Level;
 import org.launchcode.models.data.LevelDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +66,7 @@ public class LevelController {
     @RequestMapping(value = "edit/{levelId}", method = RequestMethod.GET)
     public String displayEditLevelForm(Model model, @PathVariable int levelId) {
         model.addAttribute("level", levelDao.findOne(levelId));
+        model.addAttribute("title", "Edit Level");
         return "level/edit";
     }
 

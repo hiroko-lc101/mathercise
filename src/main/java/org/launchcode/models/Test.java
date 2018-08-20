@@ -3,6 +3,7 @@ package org.launchcode.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,10 +24,9 @@ public class Test {
     @ManyToOne
     private Level level;
 
-    @ManyToMany
-    private List<Card> cards;
-
-//    private int order;
+    @OneToMany
+    @JoinColumn(name = "test_id")
+    private List<TestQuestion> testQuestions = new ArrayList<>();
 
     /**
      * constructors
@@ -35,27 +35,12 @@ public class Test {
     public Test() { }
 
     public Test(String name) {
-//    public Test(String name, int order) {
         this.name = name;
-//        this.order = order;
-    }
-
-    /**
-     * methods
-     */
-
-    public void addItem(Card item) {
-        cards.add(item);
-    }
-
-    public void removeItems() {
-        cards.clear();
     }
 
     /**
      * getters & setters
      */
-
     public int getId() {
         return id;
     }
@@ -75,17 +60,4 @@ public class Test {
     public void setLevel(Level level) {
         this.level = level;
     }
-
-//    public int getOrder() {
-//        return order;
-//    }
-
-//    public void setOrder(int order) {
-//        this.order = order;
-//    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
 }

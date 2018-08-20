@@ -3,6 +3,7 @@ package org.launchcode.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,9 @@ public class Card {
     @ManyToOne
     private Level level;
 
-    @ManyToMany(mappedBy = "cards")
-    private List<Test> tests;
+    @OneToMany
+    @JoinColumn(name = "card_id")
+    private List<TestQuestion> testQuestions = new ArrayList<>();
 
     /**
      * constructors

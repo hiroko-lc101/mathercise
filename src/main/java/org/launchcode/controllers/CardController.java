@@ -59,7 +59,7 @@ public class CardController {
     // Request path: card/remove
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String displayRemoveFlashCardForm(Model model){
-        model.addAttribute("cards", cardDao.findAll());
+        model.addAttribute("cards", cardDao.findAllByOrderByLevelAsc());
         model.addAttribute("title", "Remove Flash Cards");
         return "card/remove";
     }
@@ -78,6 +78,7 @@ public class CardController {
     public String displayEditFlashCardForm(Model model, @PathVariable int cardId) {
         model.addAttribute("card", cardDao.findOne(cardId));
         model.addAttribute("levels", levelDao.findAll());
+        model.addAttribute("title", "Edit Flash Card");
         return "card/edit";
     }
 
