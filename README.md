@@ -14,4 +14,3 @@ Online vesion of "Mathercise". Mathercise is an incentive program for 1st grader
   * Features for Students:
     * Student user login: Users will be able to log in to the application and access Student features.
     * Daily Exercise: Students will be able to practice flash cards. *Students can practice independently without a "coach"
-## License
