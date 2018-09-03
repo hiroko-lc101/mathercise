@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${title}">Default Title</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+</head>
+<body>
+    <div id="quizContainer" class="container">
+        <div id="testQuestion" class="testQuestion" th:each="testQuestion : ${testQuestions}"
+            th:value="${testQuestion.card.question} + ',' + ${testQuestion.card.answer}">
+        </div>
+        <div id="question" class="question"></div>
+        <div class="form-group col-sm-3 col-sm-offset-4">
+            <label class="answer"></label>
+            <input class="form-control" id="answer" autofocus="autofocus" onkeypress="processKeyPress(event)"/>
+        </div>
+<!--        <button id="nextButton" class="next-btn" onclick="loadNextQuestion();">Next Question</button> -->
+    </div>
+    <div id="result" class="container result" style="display:none;">
+    </div>
+    <script type="text/javascript" th:src="@{/js/question.js}"></script>
+    <script type="text/javascript" th:src="@{/js/quiz-script.js}"></script>
+
+    <!-- <form method="post" th:object="${testQuestions}">
+        <div class="question-display" th:text="${testQuestions[0].card.question}"></div>
+        <div class="form-group col-sm-3">
+            <label th:for="answer">Answer</label>
+            <input class="form-control" name="answer" autofocus="autofocus" />
+        </div>
+    </form> -->
+</body>
+</html>

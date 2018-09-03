@@ -5,3 +5,15 @@ body {
 nav {
     margin-bottom: 20px;
 }
+
+.question {
+    font-size: 300px;
+    text-align: center;
+}
+
+.result {
+    margin-top: 50px;
+    font-size: 40px;
+    text-align:center;
+    text-vertical-align: middle;
+}

@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head th:fragment="head">
+<head>
     <meta charset="UTF-8" />
-    <title th:text="${title}">Title</title>
+    <title>Mathercise</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
-<body>
-    <nav th:fragment="navigation">
-        <a href="/level">Levels</a> |
-        <a href="/card">Flash Cards</a> |
-        <a href="/test">Fitness Tests</a><br />
-        <a href="/assessment">Assessments</a><br /><br />
-    </nav>
+<body class="container">
+    <h1>Mathercise</h1>
+    <ul>
+        <li><h3>Maintenance</h3>
+            <ul>
+                <li><a href="/level">Levels</a></li>
+                <li><a href="/card">Flash Cards</a></li>
+                <li><a href="/test">Fitness Tests</a></li>
+            </ul>
+        </li>
+        <li><h3><a href="/assessment">Assessments</a></h3></li>
+    </ul>
 </body>
 </html>

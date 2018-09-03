@@ -1,4 +1,5 @@
 function validateQuestionAndAnswer() {
+    // Card - add.html: user input check
     var strQuestion = document.forms["Card"]["question"].value;
     var strAnswer = document.forms["Card"]["answer"].value;
     var pattern1 = /[0-9][+-][0-9]/;
@@ -24,6 +25,16 @@ function validateQuestionAndAnswer() {
 
     if (ans != strAnswer) {
         alert("Answer is incorrect");
+        return false;
+    }
+}
+
+function processKeyPress(e) {
+    // Assessment - assess.html: Enter key press
+    if (e.keyCode == 13) {
+        loadNextQuestion();
+    }
+    else {
         return false;
     }
 }
