@@ -5,10 +5,11 @@ var container = document.getElementById('quizContainer');
 var questionElement = document.getElementById('question');
 //var nextButton = document.getElementById('nextButton');
 var resultContent = document.getElementById('result');
+var interval = setInterval(loadNextQuestion, 5000);
 
 function loadQuestion(questionIndex) {
-    var q = questions[questionIndex];
-    questionElement.textContent = q.question;
+    var question = questions[questionIndex];
+    questionElement.textContent = question.question;
 }
 
 function loadNextQuestion() {
@@ -25,7 +26,8 @@ function loadNextQuestion() {
     if (currentQuestion == questionCount) {
         container.style.display = 'none';
         resultContent.style.display = '';
-        resultContent.textContent = "Score: " + correctCount / questionCount * 100 + "%";
+        resultContent.textContent = "Score: " + (correctCount / questionCount * 100).toFixed() + "%";
+        clearInterval(interval);
         return;
     }
     loadQuestion(currentQuestion);
