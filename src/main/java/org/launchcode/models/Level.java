@@ -25,6 +25,10 @@ public class Level {
     @JoinColumn(name = "level_id")
     private List<Card> cards = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "level_id")
+    private List<Test> tests = new ArrayList<>();
+
     /**
      * constructors
      */
