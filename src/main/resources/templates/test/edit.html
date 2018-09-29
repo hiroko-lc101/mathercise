@@ -21,32 +21,32 @@
             </select>
         </div>
         <div class="form-group">
-            <table class="table">
-                <tr>
-                    <th>Question Number</th>
-                    <th>Card</th>
-                    <th>
-                        <input type="submit" value="Add" name="addTestQuestion"/>
-                    </th>
-                </tr>
-                <div th:if="${testQuestions} and ${testQuestions.size()}">
+            <table id="testQuestionContainer" class="table">
+                <tbody>
+                    <tr>
+                        <th>Question Number</th>
+                        <th>Card</th>
+                        <th>
+                            <a href="javascript:addTestQuestion()">Add</a>
+                        </th>
+                    </tr>
+                </tbody>
+                <tbody th:if="${testQuestions} and ${testQuestions.size()}">
                     <tr th:each="testQuestion : ${testQuestions}">
-                        <td th:text="${testQuestion.questionNumber}"></td>
+                        <td id="questionNumber" class="questionNumber" th:text="${testQuestion.questionNumber}"></td>
                         <td>
-                            <div th:if="${testQuestion.card == null}">
+<!--                            <div th:if="${testQuestion.card == null}">
                                 <select th:name="cardIds">
-                                    <option th:value="-2">-- Please Select --</option>
-                                    <option th:value="-1">Remove</option>
+                                    <option th:value="-1"> Please Select </option>
                                     <option th:each="card : ${cards}"
                                             th:text="${card.question}"
                                             th:value="${card.id}">
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div th:unless="${testQuestion.card == null}">
                                 <select th:name="cardIds">
-                                    <option th:value="-2">-- Please Select --</option>
-                                    <option th:value="-1">Remove</option>
+                                    <option th:value="-1">-- Please Select --</option>
                                     <option th:each="card : ${cards}"
                                             th:text="${card.question}"
                                             th:value="${card.id}"
@@ -55,69 +55,35 @@
                                 </select>
                             </div>
                         </td>
-                        <td></td>
-                    </tr>
-                </div>
-            </table>
-        </div>
-
-
-
-<!--        <div class="form-group">
-            <table class="table">
-                <tr>
-                    <th>Question Number</th>
-                    <th>Card</th>
-                </tr>
-                <div th:if="${testQuestions} and ${testQuestions.size()}">
-                    <tr th:each="testQuestion : *{testQuestions}">
-                        <td th:text="${testQuestion.questionNumber}" th:name="questionNumbers"></td>
                         <td>
-                            <select th:name="cardIds">
-                                <option th:value="-1"> Please Select </option>
-                                <option th:each="card : ${cards}"
-                                        th:text="${card.question}"
-                                        th:value="${card.id}"
-                                        th:selected="${card.id} == ${testQuestion.card_id} ? true : false">
-                                </option>
-                            </select>
+                            <a class="removeTestQuestion" th:href="'javascript:removeTestQuestion('
+                             + (${testQuestion.questionNumber} - 1) + ')'">Remove</a>
                         </td>
                     </tr>
-                    <div th:if="*{test.cards.size()} &lt; 20"
-                         th:with="remaining=*{test.cards.size()}+1" >
-                        <tr th:each="i : ${#numbers.sequence(remaining, 20)}">
-                            <td th:text="${i}" th:name="questionNumbers"></td>
-                            <td>
+                </tbody>
+                <tbody th:unless="${testQuestions} and ${testQuestions.size()}">
+                    <tr>
+                        <td id="questionNumber" class="questionNumber">1</td>
+                        <td>
+                            <div>
                                 <select th:name="cardIds">
-                                    <option th:value="-1"> Please Select </option>
+                                    <option th:value="-1">-- Please Select --</option>
                                     <option th:each="card : ${cards}"
                                             th:text="${card.question}"
                                             th:value="${card.id}">
                                     </option>
                                 </select>
-                            </td>
-                        </tr>
-                    </div>
-                </div>
-                <div th:unless="${testQuestions} and ${testQuestions.size()}">
-                    <tr th:each="i : ${#numbers.sequence(1, 20)}">
-                        <td th:text="${i}" th:name="questionNumbers"></td>
+                            </div>
+                        </td>
                         <td>
-                            <select th:name="cardIds">
-                                <option th:value="-1"> Please Select </option>
-                                <option th:each="card : ${cards}"
-                                        th:text="${card.question}"
-                                        th:value="${card.id}">
-                                </option>
-                            </select>
+                            <a class="removeTestQuestion" href="javascript:removeTestQuestion(0)">Remove</a>
                         </td>
                     </tr>
-                </div>
+                </tbody>
             </table>
         </div>
--->
         <input type="hidden" th:value="${test.id}" name="testId" />
-        <input type="submit" value="Update" name="updateTestQuestion" />
+        <input type="submit" value="Save" onclick="return checkCardValues();"/>
     </form>
 </body>
 </html>

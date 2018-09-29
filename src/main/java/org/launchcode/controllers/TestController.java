@@ -97,25 +97,81 @@ public class TestController {
     }
 
     //Request path: test/edit
-    @RequestMapping(value = "edit", params = "addTestQuestion", method = RequestMethod.POST)
-    public String addTestQuestion(Model model, int testId, int[] cardIds) {
-        List<TestQuestion> testQuestions = testQuestionDao.findByTestId(testId);
-        int questionNumber = testQuestions.size();
-        TestQuestion newTestQuestion = new TestQuestion();
-        Test test = testDao.findOne(testId);
-        newTestQuestion.setTest(test);
-        newTestQuestion.setQuestionNumber(questionNumber + 1);
-        testQuestionDao.save(newTestQuestion);
+    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    public String updateTestQuestion(int testId, String name, int[] cardIds) {
+        // update test name
+        Test editTest = testDao.findOne(testId);
+        if (!editTest.getName().equals(name)) {
+            editTest.setName(name);
+            testDao.save(editTest);
+        }
 
-        model.addAttribute("test", test);
-        model.addAttribute("levels", levelDao.findAll());
-        model.addAttribute("testQuestions", testQuestionDao.findByTestId(testId));
-        model.addAttribute("cards", cardDao.findByLevel(test.getLevel()));
-        model.addAttribute("title", "Edit Fitness Test");
-        return "test/edit";
+        // update test question(s)
+        List<TestQuestion> testQuestions = testQuestionDao.findByTestIdOrderByQuestionNumberAsc(testId);
+        int testQuestionsSize = testQuestions.size();
+        int cardIdsSize = cardIds.length;
+
+        if (cardIdsSize < testQuestionsSize) {
+        // overwrite & delete records in database
+            for (int i = 0; i < cardIdsSize; i++) {
+                // update if different question is selected
+                if (cardIds[i] != testQuestions.get(i).getCard().getId()) {
+                    int testQuestionId = testQuestions.get(i).getId();
+                    TestQuestion editTestQuestion = testQuestionDao.findOne(testQuestionId);
+                    Card card = cardDao.findOne(cardIds[i]);
+                    editTestQuestion.setCard(card);
+                    editTestQuestion.setQuestionNumber(i + 1);
+                    testQuestionDao.save(editTestQuestion);
+                }
+            }
+            for (int i = cardIdsSize; i < testQuestionsSize; i++) {
+                int testQuestionId = testQuestions.get(i).getId();
+                testQuestionDao.delete(testQuestionId);
+            }
+        }
+        else if (cardIdsSize == testQuestionsSize) {
+        // overwrite records in database
+            for (int i = 0; i < cardIdsSize; i++) {
+                // update if different question is selected
+                if (cardIds[i] != testQuestions.get(i).getCard().getId()) {
+                    int testQuestionId = testQuestions.get(i).getId();
+                    TestQuestion editTestQuestion = testQuestionDao.findOne(testQuestionId);
+                    Card card = cardDao.findOne(cardIds[i]);
+                    editTestQuestion.setCard(card);
+                    editTestQuestion.setQuestionNumber(i + 1);
+                    testQuestionDao.save(editTestQuestion);
+                }
+            }
+        }
+        else {
+        // cardIdsSize > testQuestionsSize
+        // overwrite & add new records in database
+            for (int i = 0; i < testQuestionsSize; i++) {
+                // update if different question is selected
+                if (cardIds[i] != testQuestions.get(i).getCard().getId()) {
+                    int testQuestionId = testQuestions.get(i).getId();
+                    TestQuestion editTestQuestion = testQuestionDao.findOne(testQuestionId);
+                    Card card = cardDao.findOne(cardIds[i]);
+                    editTestQuestion.setCard(card);
+                    editTestQuestion.setQuestionNumber(i + 1);
+                    testQuestionDao.save(editTestQuestion);
+                }
+            }
+            for (int i = testQuestionsSize; i < cardIdsSize; i++) {
+                TestQuestion newTestQuestion = new TestQuestion();
+                Test test = testDao.findOne(testId);
+                newTestQuestion.setTest(test);
+                Card card = cardDao.findOne(cardIds[i]);
+                newTestQuestion.setCard(card);
+                newTestQuestion.setQuestionNumber(i + 1);
+                testQuestionDao.save(newTestQuestion);
+            }
+        }
+        return "redirect:";
     }
 
-    //Request path: test/edit
+/*
+                        int testQuestionId = testQuestions.get(i).getI
     @RequestMapping(value = "edit", params = "updateTestQuestion", method = RequestMethod.POST)
     public String updateTestQuestion(int testId, String name, int[] cardIds) {
         // update test name
@@ -139,8 +195,7 @@ public class TestController {
                         testQuestionDao.delete(testQuestionId);
                         questionNumber--;
                     } else {
-                        // update existing record
-                        int testQuestionId = testQuestions.get(i).getId();
+                        // update existing recordd();
                         TestQuestion editTestQuestion = testQuestionDao.findOne(testQuestionId);
                         Card card = cardDao.findOne(cardIds[i]);
                         editTestQuestion.setCard(card);
@@ -168,4 +223,5 @@ public class TestController {
         }
         return "redirect:";
     }
+    */
 }

@@ -9,7 +9,7 @@ var interval = setInterval(loadNextQuestion, 5000);
 
 function loadQuestion(questionIndex) {
     var question = questions[questionIndex];
-    questionElement.textContent = question.question;
+    questionElement.textContent = question.question + "=";
 }
 
 function loadNextQuestion() {
